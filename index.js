@@ -9,7 +9,7 @@ const MongoClient = require("mongodb").MongoClient;
 const app = express();
 const port = 5039; 
 
-const CONNECTION_STRING = "mongodb+srv://admin:admin@cluster0.uxjzqe0.mongodb.net/?retryWrites=true&w=majority";; // Replace with your MongoDB connection string
+const CONNECTION_STRING = "mongodb+srv://admin:admin@cluster0.uxjzqe0.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose.connect(CONNECTION_STRING, {
   useNewUrlParser: true,
