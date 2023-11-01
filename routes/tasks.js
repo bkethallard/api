@@ -39,7 +39,7 @@ router.get('/tasks/:id', async (req, res) => {
 // Update a task by ID
 router.patch('/tasks/:id', async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ['title', 'description', 'completed'];
+  const allowedUpdates = ['title', 'description'];
   const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
   if (!isValidOperation) {
@@ -61,17 +61,23 @@ router.patch('/tasks/:id', async (req, res) => {
 
 // Delete a task by ID
 router.delete('/tasks/:id', async (req, res) => {
-  try {
-    const task = await Task.findByIdAndDelete(req.params.id);
-
-    if (!task) {
-      return res.status(404).json({ error: 'Task not found' });
+    try {
+      const taskId = req.params.id;
+      console.log('Received DELETE request for task ID:', taskId); // Add this line  
+      // Ensure that taskId is valid before proceeding
+  
+      // Delete the task from the database using taskId
+      const deletedTask = await Task.findByIdAndDelete(taskId);
+  
+      if (!deletedTask) {
+        return res.status(404).json({ error: 'Task not found' });
+      }
+  
+      res.status(200).json(deletedTask);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-
-    res.status(200).json(task);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  });
+  
 
 module.exports = router;
