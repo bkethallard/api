@@ -59,6 +59,24 @@ router.patch('/tasks/:id', async (req, res) => {
   }
 });
 
+router.put('/tasks/:id', async (req, res) => {
+  try {
+    const taskId = req.params.id;
+    const updatedTask = req.body;
+
+    const task = await Task.findByIdAndUpdate(taskId, updatedTask, { new: true, runValidators: true });
+
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+
 // Delete a task by ID
 router.delete('/tasks/:id', async (req, res) => {
     try {
